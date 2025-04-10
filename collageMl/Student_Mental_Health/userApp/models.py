@@ -22,8 +22,6 @@ class UserResponse(models.Model):
 
     def __str__(self):
         return f"Response #{self.id}"
-    def __str__(self):
-        return f"Response #{self.id}"
 
 class Prediction(models.Model):
     user_response = models.ForeignKey(UserResponse, on_delete=models.CASCADE)
