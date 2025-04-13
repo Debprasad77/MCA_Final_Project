@@ -1,16 +1,265 @@
 from django import forms
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth.models import User
+from django.core.validators import MinValueValidator, MaxValueValidator
+from .models import Profile
 
 class MentalHealthForm(forms.Form):
-    age = forms.IntegerField(label='Age')
-    gender = forms.CharField(max_length=10, label='Gender')
-    course = forms.CharField(max_length=50, label='Course')
-    cgpa = forms.DecimalField(max_digits=3, decimal_places=2, label='CGPA')
-    semester_credit_load = forms.IntegerField(label='Semester Credit Load')
-    sleep_quality = forms.CharField(max_length=10, label='Sleep Quality')
-    physical_activity = forms.CharField(max_length=10, label='Physical Activity')
-    diet_quality = forms.CharField(max_length=10, label='Diet Quality')
-    social_support = forms.CharField(max_length=10, label='Social Support')
-    relationship_status = forms.CharField(max_length=10, label='Relationship Status')
-    financial_stress = forms.IntegerField(label='Financial Stress')
+    age = forms.IntegerField(
+        label='Age',
+        widget=forms.NumberInput(attrs={'placeholder': 'Enter your age (e.g., 20)'}),
+        validators=[MinValueValidator(10), MaxValueValidator(100)]
+    )
+    
+    GENDER_CHOICES = [
+        ('', '-- Select Gender --'),
+        ('Male', 'Male'),
+        ('Female', 'Female'),
+        ('Others', 'Others'),
+    ]
+    gender = forms.ChoiceField(
+        label='Gender',
+        choices=GENDER_CHOICES,
+        widget=forms.Select(attrs={'class': 'form-select'})
+    )
+    
+    COURSE_CHOICES = [
+        ('', '-- Select Course --'),
+        ('Engineering', 'Engineering'),
+        ('Business', 'Business'),
+        ('Computer', 'Computer Science'),
+        ('Law', 'Law'),
+        ('Medical', 'Medical'),
+        ('Other', 'Other'),
+    ]
+    course = forms.ChoiceField(
+        label='Course',
+        choices=COURSE_CHOICES,
+        widget=forms.Select(attrs={'class': 'form-select'})
+    )
+    
+    cgpa = forms.DecimalField(
+        label='CGPA',
+        max_digits=3,
+        decimal_places=2,
+        widget=forms.NumberInput(attrs={'placeholder': 'Enter CGPA (e.g., 3.75)'}),
+        validators=[MinValueValidator(0.0), MaxValueValidator(10.0)]
+    )
+    
+    semester_credit_load = forms.IntegerField(
+        label='Semester Credit Load',
+        widget=forms.NumberInput(attrs={'placeholder': 'Enter credits (e.g., 15)'}),
+        validators=[MinValueValidator(1), MaxValueValidator(30)]
+    )
+    
+    SLEEP_QUALITY_CHOICES = [
+        ('', '-- Select Sleep Quality --'),
+        ('Good', 'Good'),
+        ('Average', 'Average'),
+        ('Poor', 'Poor'),
+    ]
+    sleep_quality = forms.ChoiceField(
+        label='Sleep Quality',
+        choices=SLEEP_QUALITY_CHOICES,
+        widget=forms.Select(attrs={'class': 'form-select'})
+    )
+    
+    PHYSICAL_ACTIVITY_CHOICES = [
+        ('', '-- Select Physical Activity --'),
+        ('Low', 'Low'),
+        ('Moderate', 'Moderate'),
+        ('High', 'High'),
+    ]
+    physical_activity = forms.ChoiceField(
+        label='Physical Activity',
+        choices=PHYSICAL_ACTIVITY_CHOICES,
+        widget=forms.Select(attrs={'class': 'form-select'})
+    )
+    
+    DIET_QUALITY_CHOICES = [
+        ('', '-- Select Diet Quality --'),
+        ('Good', 'Good'),
+        ('Average', 'Average'),
+        ('Poor', 'Poor'),
+    ]
+    diet_quality = forms.ChoiceField(
+        label='Diet Quality',
+        choices=DIET_QUALITY_CHOICES,
+        widget=forms.Select(attrs={'class': 'form-select'})
+    )
+    
+    SOCIAL_SUPPORT_CHOICES = [
+        ('', '-- Select Social Support --'),
+        ('Low', 'Low'),
+        ('Moderate', 'Moderate'),
+        ('High', 'High'),
+    ]
+    social_support = forms.ChoiceField(
+        label='Social Support',
+        choices=SOCIAL_SUPPORT_CHOICES,
+        widget=forms.Select(attrs={'class': 'form-select'})
+    )
+    
+    RELATIONSHIP_STATUS_CHOICES = [
+        ('', '-- Select Relationship Status --'),
+        ('Single', 'Single'),
+        ('In a relationship', 'In a relationship'),
+        ('Married', 'Married'),
+    ]
+    relationship_status = forms.ChoiceField(
+        label='Relationship Status',
+        choices=RELATIONSHIP_STATUS_CHOICES,
+        widget=forms.Select(attrs={'class': 'form-select'})
+    )
+    
+    financial_stress = forms.IntegerField(
+        label='Financial Stress',
+        widget=forms.NumberInput(attrs={'placeholder': 'Rate 1-5 (1 = lowest)'}),
+        validators=[MinValueValidator(1), MaxValueValidator(5)]
+    )
 
-    # Add more fields as necessary
+#    ACADEMIC_STRESS_CHOICES / New added Data
+
+
+    SUBSTANCE_USE_CHOICES = [
+        ('', '-- Select Substance Use --'),
+        ('Never', 'Never'),
+        ('Occasionally', 'Occasionally'),
+        ('Frequently', 'Frequently'),
+    ]
+    substance_use = forms.ChoiceField(
+        label='Substance Use',
+        choices=SUBSTANCE_USE_CHOICES,
+        widget=forms.Select(attrs={'class': 'form-select'}),
+    )
+
+    COUNSELING_CHOICES = [
+        ('', '-- Select Counseling Usage --'),
+        ('Never', 'Never'),
+        ('Occasionally', 'Occasionally'),
+        ('Frequently', 'Frequently'),
+    ]
+    counseling_service_use = forms.ChoiceField(
+        label='Counseling Service Usage',
+        choices=COUNSELING_CHOICES,
+        widget=forms.Select(attrs={'class': 'form-select'}),
+    )
+
+    FAMILY_HISTORY_CHOICES = [
+        ('', '-- Select Family History --'),
+        ('Yes', 'Yes'),
+        ('No', 'No'),
+    ]
+    family_history = forms.ChoiceField(
+        label='Family History of Mental Health Issues',
+        choices=FAMILY_HISTORY_CHOICES,
+        widget=forms.Select(attrs={'class': 'form-select'}),
+    )
+
+    CHRONIC_ILLNESS_CHOICES = [
+        ('', '-- Select Chronic Illness --'),
+        ('Yes', 'Yes'),
+        ('No', 'No'),
+    ]
+    chronic_illness = forms.ChoiceField(
+        label='Chronic Illness',
+        choices=CHRONIC_ILLNESS_CHOICES,
+        widget=forms.Select(attrs={'class': 'form-select'}),
+    )
+
+    EXTRACURRICULAR_CHOICES = [
+        ('', '-- Select Involvement Level --'),
+        ('Low', 'Low'),
+        ('Moderate', 'Moderate'),
+        ('High', 'High'),
+    ]
+    extracurricular_involvement = forms.ChoiceField(
+        label='Extracurricular Involvement',
+        choices=EXTRACURRICULAR_CHOICES,
+        widget=forms.Select(attrs={'class': 'form-select'}),
+    )
+
+    RESIDENCE_CHOICES = [
+        ('', '-- Select Residence Type --'),
+        ('On-Campus', 'On-Campus'),
+        ('Off-Campus', 'Off-Campus'),
+        ('With Family', 'With Family'),
+    ]
+    residence_type = forms.ChoiceField(
+        label='Residence Type',
+        choices=RESIDENCE_CHOICES,
+        widget=forms.Select(attrs={'class': 'form-select'}),
+    )
+
+
+
+
+
+
+class ProfileForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ['image', 'bio', 'location']
+        widgets = {
+            'image': forms.FileInput(attrs={
+                'class': 'form-control',
+                'accept': 'image/*'
+            }),
+            'bio': forms.Textarea(attrs={
+                'rows': 4,
+                'class': 'form-control',
+                'placeholder': 'Tell us about yourself...'
+            }),
+            'location': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Enter your location'
+            }),
+        }
+        labels = {
+            'image': 'Profile Picture',
+            'bio': 'Biography',
+            'location': 'Location'
+        }
+
+class UserUpdateForm(forms.ModelForm):
+    email = forms.EmailField(
+        widget=forms.EmailInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Enter your email'
+        })
+    )
+
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name', 'email']
+        widgets = {
+            'first_name': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'First Name'
+            }),
+            'last_name': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Last Name'
+            }),
+        }
+
+class CustomPasswordChangeForm(PasswordChangeForm):
+    old_password = forms.CharField(
+        widget=forms.PasswordInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Current Password'
+        })
+    )
+    new_password1 = forms.CharField(
+        widget=forms.PasswordInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'New Password'
+        })
+    )
+    new_password2 = forms.CharField(
+        widget=forms.PasswordInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Confirm New Password'
+        })
+    )
+

@@ -1,0 +1,57 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="feature-card p-4">
+                <h2 class="mb-4"><i class="bi bi-gear-wide-connected me-2"></i>Account Settings</h2>
+                
+                <!-- Profile Update Form -->
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    
+                    <!-- Profile Picture Section -->
+                    <div class="mb-4 text-center">
+                        <div class="mb-3">
+                            <img src="{% if user.profile.image %}{{ user.profile.image.url }}{% else %}{% static 'images/default-avatar.png' %}{% endif %}" 
+                                 class="rounded-circle shadow wellness-image" 
+                                 alt="Current Profile" 
+                                 style="width: 120px; height: 120px; object-fit: cover;">
+                        </div>
+                        <div class="form-group">
+                            {{ form.image.label_tag }}
+                            <input type="file" name="image" 
+                                   class="form-control" 
+                                   accept="image/*"
+                                   id="id_image">
+                        </div>
+                    </div>
+
+                    <!-- Bio Section -->
+                    <div class="mb-4">
+                        <label class="form-label">Bio</label>
+                        {{ form.bio }}
+                    </div>
+
+                    <!-- Location Section -->
+                    <div class="mb-4">
+                        <label class="form-label">Location</label>
+                        {{ form.location }}
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn assessment-btn text-white rounded-pill">
+                            <i class="bi bi-save me-2"></i>Save Changes
+                        </button>
+                        <a href="{% url 'profile' %}" class="btn btn-outline-secondary rounded-pill">
+                            Cancel
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
