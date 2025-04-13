@@ -294,8 +294,91 @@ def predict_api(request):
     return JsonResponse({'error': 'Invalid request method'}, status=400)
 
 
+from django.contrib.auth import login, logout
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib import messages
+from .models import Profile 
+from django.contrib.auth.forms import PasswordChangeForm
+from .forms import ProfileForm, UserUpdateForm
 
+def login_view(request):
+    if request.method == 'POST':
+        form = AuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                login(request, user)
+                return redirect('home')
+        return render(request, 'login.html', {'form': form})
+    
+    # GET request
+    form = AuthenticationForm()
+    return render(request, 'login.html', {'form': form})
 
+def logout_view(request):
+    logout(request)
+    return redirect('home')
+
+@login_required
+def profile_view(request):
+    try:
+        profile = request.user.profile
+    except Profile.DoesNotExist:  # Now properly referenced
+        # Create profile if missing
+        Profile.objects.create(user=request.user)
+        profile = request.user.profile
+
+    if request.method == 'POST':
+        form = ProfileForm(request.POST, request.FILES, instance=profile)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Your profile has been updated!')
+            return redirect('profile')
+        else:
+            messages.error(request, 'Please correct the errors below.')
+    else:
+        form = ProfileForm(instance=profile)
+
+    return render(request, 'profile.html', {'form': form})
+
+@login_required
+def settings_view(request):
+    user_form = UserUpdateForm(instance=request.user)
+    password_form = PasswordChangeForm(request.user)
+    profile_form = ProfileForm(instance=request.user.profile)
+
+    if request.method == 'POST':
+        if 'update_account' in request.POST:
+            user_form = UserUpdateForm(request.POST, instance=request.user)
+            if user_form.is_valid():
+                user_form.save()
+                messages.success(request, 'Your account details have been updated!')
+                return redirect('settings')
+        
+        elif 'change_password' in request.POST:
+            password_form = PasswordChangeForm(request.user, request.POST)
+            if password_form.is_valid():
+                password_form.save()
+                messages.success(request, 'Your password has been changed!')
+                return redirect('settings')
+
+        elif 'update_profile' in request.POST:
+            profile_form = ProfileForm(request.POST, request.FILES, instance=request.user.profile)
+            if profile_form.is_valid():
+                profile_form.save()
+                messages.success(request, 'Your profile has been updated!')
+                return redirect('settings')
+
+    context = {
+        'user_form': user_form,
+        'password_form': password_form,
+        'profile_form': profile_form
+    }
+    return render(request, 'settings.html', context)
 
 
 

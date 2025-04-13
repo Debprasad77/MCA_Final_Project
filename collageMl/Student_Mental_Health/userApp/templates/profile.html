@@ -1,0 +1,66 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <!-- Left Sidebar -->
+        <div class="col-lg-4 mb-4">
+            <div class="feature-card p-4 text-center">
+                <div class="image-container mb-4">
+                    <img src="{% if user.profile.image %}{{ user.profile.image.url }}{% else %}{% static 'images/default-avatar.png' %}{% endif %}" 
+                         class="rounded-circle shadow wellness-image" 
+                         alt="Profile Picture"
+                         style="width: 150px; height: 150px; object-fit: cover;">
+                </div>
+                <h3 class="mb-3">{{ user.username }}</h3>
+                {% if user.profile.location %}
+                <p class="text-muted mb-2">
+                    <i class="bi bi-geo-alt me-2"></i>{{ user.profile.location }}
+                </p>
+                {% endif %}
+                <div class="d-grid">
+                    <a href="{% url 'settings' %}" class="btn btn-outline-primary rounded-pill">
+                        <i class="bi bi-pencil-square me-2"></i>Edit Profile
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="col-lg-8">
+            <div class="feature-card p-4">
+                <h2 class="mb-4">Profile Information</h2>
+                
+                <!-- Bio Section -->
+                <div class="mb-5">
+                    <h4 class="mb-3"><i class="bi bi-person-lines-fill me-2"></i>About Me</h4>
+                    <div class="ps-4">
+                        {% if user.profile.bio %}
+                            <p class="lead">{{ user.profile.bio }}</p>
+                        {% else %}
+                            <p class="text-muted">No bio added yet</p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Activity Stats -->
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <div class="bg-light p-3 rounded-3">
+                            <h5><i class="bi bi-clipboard-data me-2"></i>Assessments Taken</h5>
+                            <p class="display-6 mb-0">12</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="bg-light p-3 rounded-3">
+                            <h5><i class="bi bi-heart-pulse me-2"></i>Wellness Score</h5>
+                            <p class="display-6 mb-0">84%</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

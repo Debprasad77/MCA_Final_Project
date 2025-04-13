@@ -1,138 +1,315 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mental Health Assessment</title>
+    <title>Mental Health Insight</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
+        /* Original Styles */
+        .gradient-bg {
+            background: linear-gradient(135deg, #2e84db 0%, #1a4b8c 100%);
+        }
+        
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #f5f7fa;
+            background: #f8fafc;
         }
-        h2 {
-            color: #2c3e50;
-            text-align: center;
-            margin-bottom: 30px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #3498db;
+
+        .feature-card {
+            background: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease;
+            border: 1px solid #e2e8f0;
         }
-        .form-container {
-            background: white;
-            padding: 25px;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+        .feature-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
         }
-        .form-group {
-            margin-bottom: 20px;
-        }
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: #2c3e50;
-        }
-        input[type="text"],
-        input[type="number"],
-        input[type="email"],
-        select,
-        textarea {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 16px;
-            transition: border 0.3s;
-        }
-        input[type="text"]:focus,
-        input[type="number"]:focus,
-        input[type="email"]:focus,
-        select:focus,
-        textarea:focus {
-            border-color: #3498db;
-            outline: none;
-            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
-        }
-        .helptext {
-            font-size: 0.85em;
-            color: #7f8c8d;
-            display: block;
-            margin-top: 5px;
-        }
-        button[type="submit"] {
-            background-color: #3498db;
-            color: white;
+
+        .assessment-btn {
+            background: #ff4757;
             border: none;
-            padding: 12px 20px;
-            font-size: 16px;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            display: block;
-            width: 100%;
-            font-weight: 600;
+            padding: 1rem 2.5rem;
+            font-size: 1.2rem;
+            letter-spacing: 0.5px;
         }
-        button[type="submit"]:hover {
-            background-color: #2980b9;
+
+        .highlight-text {
+            color: #ff4757;
+            font-weight: 700;
         }
-        .errorlist {
-            color: #e74c3c;
-            margin-top: 5px;
-            padding-left: 0;
-            list-style: none;
+
+        .mental-health-icon {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 1.5rem;
+            filter: brightness(0.9);
         }
-        .field-required::after {
-            content: " *";
-            color: #e74c3c;
+
+        .modal-content {
+            border-radius: 20px;
+            border: 1px solid #e2e8f0;
         }
-        @media (max-width: 600px) {
-            body {
-                padding: 10px;
-            }
-            .form-container {
-                padding: 15px;
-            }
+
+        /* Added Section Styles */
+        .step-number {
+            width: 60px;
+            height: 60px;
+            background: #ff4757;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.5rem;
+            margin: 0 auto 1.5rem;
+            box-shadow: 0 4px 15px rgba(255, 71, 87, 0.25);
+        }
+
+        .bg-highlight {
+            background: #ff4757 !important;
+        }
+
+        .lead {
+            font-size: 1.25rem;
+            font-weight: 300;
+        }
+
+        .wellness-image {
+            transition: transform 0.3s ease;
+            width: 200px;
+            height: 200px;
+            object-fit: cover;
+            border: 3px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .image-container:hover .wellness-image {
+            transform: scale(1.05);
+        }
+
+        .text-highlight {
+            color: #ff4757;
         }
     </style>
 </head>
 <body>
-    <div class="form-container">
-        <h2>Mental Health Assessment</h2>
-        <form method="post" action="{% url 'home' %}">
-            {% csrf_token %}
-            
-            {% if form.non_field_errors %}
-                <div class="errorlist">
-                    {{ form.non_field_errors }}
+    {% include 'navbar.html' %}
+
+    <!-- Hero Section -->
+    <section class="gradient-bg">
+        <div class="container py-5">
+            <div class="row align-items-center py-5">
+                <div class="col-lg-6 text-center text-lg-start text-white">
+                    <h1 class="display-4 fw-bold mb-4">
+                        Not sure about your<br>
+                        <span class="highlight-text">Mental Health</span> status?<br>
+                        Discover in <span class="highlight-text">3 Minutes</span>
+                    </h1>
+                    <button class="btn assessment-btn text-white rounded-pill" 
+                            data-bs-toggle="modal" 
+                            data-bs-target="#assessmentModal">
+                        Start Free Assessment
+                    </button>
                 </div>
-            {% endif %}
-            
-            {% for field in form %}
-                <div class="form-group">
-                    <label for="{{ field.id_for_label }}" class="{% if field.field.required %}field-required{% endif %}">
-                        {{ field.label }}
-                    </label>
-                    {{ field }}
-                    {% if field.help_text %}
-                        <span class="helptext">{{ field.help_text }}</span>
-                    {% endif %}
-                    {% if field.errors %}
-                        <ul class="errorlist">
-                            {% for error in field.errors %}
-                                <li>{{ error }}</li>
-                            {% endfor %}
-                        </ul>
-                    {% endif %}
+                <div class="col-lg-6 mt-5 mt-lg-0">
+                    <img src="{% static 'images/hero.png' %}" 
+                         alt="Mental Health" 
+                         class="img-fluid">
                 </div>
-            {% endfor %}
-            
-            <button type="submit">Submit Assessment</button>
-        </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Grid -->
+    <section class="container py-5">
+        <div class="row g-4">
+            <!-- Original Feature Cards -->
+            <div class="col-md-4">
+                <div class="feature-card p-4 text-center">
+                    <img src="{% static 'icons/quick-test.svg' %}" 
+                         alt="Quick Test" 
+                         class="mental-health-icon">
+                    <h3 class="mb-3">Instant Analysis</h3>
+                    <p class="text-secondary">Get immediate insights into your mental health status through our validated assessment tool</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-card p-4 text-center">
+                    <img src="{% static 'icons/progress.svg' %}" 
+                         alt="Progress" 
+                         class="mental-health-icon">
+                    <h3 class="mb-3">Personalized Tips</h3>
+                    <p class="text-secondary">Receive customized recommendations based on your assessment results</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-card p-4 text-center">
+                    <img src="{% static 'icons/privacy.svg' %}" 
+                         alt="Privacy" 
+                         class="mental-health-icon">
+                    <h3 class="mb-3">Secure & Private</h3>
+                    <p class="text-secondary">Your data remains completely confidential with end-to-end encryption</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="container py-5">
+        <div class="row text-center mb-5">
+            <div class="col-12">
+                <h2 class="fw-bold display-6 mb-3">How Our Assessment Works</h2>
+                <p class="text-muted">Three simple steps to understanding your mental health better</p>
+            </div>
+        </div>
+        <div class="row g-4">
+            <!-- Step Cards -->
+            <div class="col-md-4">
+                <div class="feature-card p-4 text-center">
+                    <div class="step-number bg-highlight">1</div>
+                    <h3 class="mb-3">Answer Questions</h3>
+                    <p class="text-secondary">Complete our brief 12-question assessment developed by mental health professionals</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-card p-4 text-center">
+                    <div class="step-number bg-highlight">2</div>
+                    <h3 class="mb-3">Instant Analysis</h3>
+                    <p class="text-secondary">Our system immediately evaluates your responses using clinical guidelines</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-card p-4 text-center">
+                    <div class="step-number bg-highlight">3</div>
+                    <h3 class="mb-3">Get Insights</h3>
+                    <p class="text-secondary">Receive personalized recommendations and actionable next steps</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Wellbeing Strategies Section -->
+    <section class="container py-5">
+        <div class="row text-center mb-5">
+            <div class="col-12">
+                <h2 class="fw-bold display-6 mb-3">Wellbeing Strategies</h2>
+                <p class="text-muted">Evidence-based techniques to support your mental health</p>
+            </div>
+        </div>
+        <div class="row g-4">
+            <!-- Wellness Cards -->
+            <div class="col-md-4">
+                <div class="feature-card p-4 text-center">
+                    <div class="image-container rounded-circle overflow-hidden mb-4">
+                        <img src="{% static 'images/mindfulness.jpeg' %}" 
+                             alt="Mindfulness practice" 
+                             class="img-fluid wellness-image">
+                    </div>
+                    <h3>Mindfulness Practice</h3>
+                    <p class="text-secondary">Learn meditation techniques to reduce stress and improve focus</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-card p-4 text-center">
+                    <div class="image-container rounded-circle overflow-hidden mb-4">
+                        <img src="{% static 'images/community.jpeg' %}" 
+                             alt="Support community" 
+                             class="img-fluid wellness-image">
+                    </div>
+                    <h3>Community Support</h3>
+                    <p class="text-secondary">Connect with others through our peer support networks</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-card p-4 text-center">
+                    <div class="image-container rounded-circle overflow-hidden mb-4">
+                        <img src="{% static 'images/therapy.jpeg' %}" 
+                             alt="Professional help" 
+                             class="img-fluid wellness-image">
+                    </div>
+                    <h3>Expert Guidance</h3>
+                    <p class="text-secondary">Access professional resources and therapeutic tools</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mindfulness Banner -->
+    <section class="gradient-bg py-5" style="background: linear-gradient(135deg, #ff4757 0%, #ff6b81 100%);">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <img src="{% static 'images/meditation.png' %}" 
+                         alt="Mindfulness exercises" 
+                         class="img-fluid rounded-3 shadow">
+                </div>
+                <div class="col-md-6 text-white mt-4 mt-md-0">
+                    <h2 class="fw-bold mb-4">Daily Mindfulness Practice</h2>
+                    <p class="lead mb-4">Discover simple techniques to improve your mental resilience:</p>
+                    <ul class="list-unstyled">
+                        <li class="mb-3 d-flex align-items-center">
+                            <span class="bg-white text-highlight rounded-circle d-inline-block me-3" 
+                                  style="width:30px; height:30px; line-height:30px; text-align:center">✓</span>
+                            Guided breathing exercises
+                        </li>
+                        <li class="mb-3 d-flex align-items-center">
+                            <span class="bg-white text-highlight rounded-circle d-inline-block me-3" 
+                                  style="width:30px; height:30px; line-height:30px; text-align:center">✓</span>
+                            Progressive muscle relaxation
+                        </li>
+                        <li class="d-flex align-items-center">
+                            <span class="bg-white text-highlight rounded-circle d-inline-block me-3" 
+                                  style="width:30px; height:30px; line-height:30px; text-align:center">✓</span>
+                            Cognitive behavioral techniques
+                        </li>
+                    </ul>
+                    <button class="btn btn-outline-light rounded-pill mt-3 px-4">
+                        Explore Exercises
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final CTA Section -->
+    <section class="gradient-bg py-5" style="margin-bottom: -2rem;">
+        <div class="container text-center text-white">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <h2 class="fw-bold mb-4 display-6">Take Control of Your Mental Wellbeing Today</h2>
+                    <p class="mb-4 lead">Join thousands who've gained clarity through our assessment</p>
+                    <button class="btn assessment-btn text-white rounded-pill px-4 py-2" 
+                            data-bs-toggle="modal" 
+                            data-bs-target="#assessmentModal">
+                        Start Your Assessment Now
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Assessment Modal -->
+    <div class="modal fade" id="assessmentModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content p-4">
+                <div class="modal-header border-0">
+                    <h2 class="modal-title fw-bold">Mental Health Assessment</h2>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    {% include 'assesment.html' %}
+                </div>
+            </div>
+        </div>
     </div>
+
+    {% include 'footer.html' %}
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
-

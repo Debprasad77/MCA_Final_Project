@@ -1,534 +1,355 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mental Health Assessment Results</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mental Health Results - Insight Scholar</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="{% static 'css/index.css' %}" />
     <style>
-        :root {
-            --primary: #4361ee;
-            --secondary: #3f37c9;
-            --accent: #4895ef;
-            --danger: #f72585;
-            --warning: #f77f00;
-            --success: #4cc9f0;
-            --light: #f8f9fa;
-            --dark: #212529;
-            --gray: #6c757d;
-            --white: #ffffff;
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Poppins', sans-serif;
-            line-height: 1.6;
-            color: var(--dark);
-            background-color: #f5f7ff;
-            min-height: 100vh;
-            padding: 2rem;
-        }
-        
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-        }
-        
-        .card {
-            background: var(--white);
-            border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-            overflow: hidden;
-            margin-bottom: 2rem;
-        }
-        
-        .header {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: var(--white);
-            padding: 2rem;
-            text-align: center;
-        }
-        
-        .header h1 {
-            font-size: 2rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
-        
-        .header p {
-            opacity: 0.9;
-            font-weight: 300;
-        }
-        
-        .content {
-            padding: 2rem;
-        }
-        
-        .section-title {
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: var(--primary);
-            margin-bottom: 1.5rem;
-            position: relative;
-            padding-bottom: 0.5rem;
-        }
-        
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 50px;
-            height: 3px;
-            background: var(--accent);
-            border-radius: 3px;
-        }
-        
-        .scores-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-        
-        .score-card {
-            background: var(--light);
-            border-radius: 12px;
-            padding: 1.5rem;
-            text-align: center;
-            transition: transform 0.3s ease;
-        }
-        
-        .score-card:hover {
-            transform: translateY(-5px);
-        }
-        
-        .score-card.stress {
-            border-top: 4px solid var(--danger);
-        }
-        
-        .score-card.depression {
-            border-top: 4px solid var(--warning);
-        }
-        
-        .score-card.anxiety {
-            border-top: 4px solid var(--success);
-        }
-        
-        .score-label {
-            font-size: 1rem;
-            font-weight: 500;
-            margin-bottom: 0.5rem;
-            color: var(--gray);
-        }
-        
-        .score-value {
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-        }
-        
-        .score-card.stress .score-value {
-            color: var(--danger);
-        }
-        
-        .score-card.depression .score-value {
-            color: var(--warning);
-        }
-        
-        .score-card.anxiety .score-value {
-            color: var(--success);
-        }
-        
-        .score-level {
-            display: inline-block;
-            padding: 0.25rem 0.75rem;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 500;
-            margin-top: 0.5rem;
-        }
-        
-        .score-card.stress .score-level {
-            background-color: rgba(247, 37, 133, 0.1);
-            color: var(--danger);
-        }
-        
-        .score-card.depression .score-level {
-            background-color: rgba(247, 127, 0, 0.1);
-            color: var(--warning);
-        }
-        
-        .score-card.anxiety .score-level {
-            background-color: rgba(76, 201, 240, 0.1);
-            color: var(--success);
-        }
-        
-        .charts-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin: 2rem 0;
-        }
+      :root {
+        --primary: #4361ee;
+        --secondary: #7c3aed;
+        --accent: #ff6b6b;
+        --success: #14b8a6;
+        --warning: #f59e0b;
+        --danger: #e11d48;
+        --light: #f8fafc;
+        --dark: #1e293b;
+      }
 
-        .chart-card {
-            background: var(--light);
-            border-radius: 12px;
-            padding: 1.5rem;
-        }
+      body {
+        padding-top: 80px;
+        background: linear-gradient(15deg, #f8fafc 0%, #ffffff 100%);
+        font-family: "Poppins", sans-serif;
+      }
 
-        .chart-container {
-            position: relative;
-            height: 400px;
-            margin: 1rem 0;
-        }
-        
-        .recommendations {
-            margin-bottom: 2rem;
-        }
-        
-        .rec-card {
-            background: var(--light);
-            border-radius: 12px;
-            padding: 1.5rem;
-            margin-bottom: 1rem;
-        }
-        
-        .rec-title {
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-        }
-        
-        .rec-title i {
-            margin-right: 0.5rem;
-            font-size: 1.25rem;
-        }
-        
-        .rec-title.stress {
-            color: var(--danger);
-        }
-        
-        .rec-title.depression {
-            color: var(--warning);
-        }
-        
-        .rec-title.anxiety {
-            color: var(--success);
-        }
-        
-        .rec-list {
-            list-style-type: none;
-        }
-        
-        .rec-list li {
-            padding: 0.5rem 0;
-            position: relative;
-            padding-left: 1.5rem;
-        }
-        
-        .rec-list li::before {
-            content: '•';
-            position: absolute;
-            left: 0;
-            color: var(--accent);
-            font-weight: bold;
-            font-size: 1.2rem;
-        }
-        
-        .explanation {
-            background: var(--light);
-            border-radius: 12px;
-            padding: 1.5rem;
-        }
-        
-        .explanation-item {
-            padding: 0.75rem 0;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-            display: flex;
-        }
-        
-        .explanation-item:last-child {
-            border-bottom: none;
-        }
-        
-        .explanation-item::before {
-            content: '→';
-            color: var(--accent);
-            margin-right: 0.75rem;
-        }
-        
-        .btn-container {
-            text-align: center;
-            margin-top: 2rem;
-        }
-        
-        .btn {
-            display: inline-block;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: var(--white);
-            padding: 0.75rem 2rem;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: 500;
-            box-shadow: 0 4px 15px rgba(67, 97, 238, 0.3);
-            transition: all 0.3s ease;
-            border: none;
-            cursor: pointer;
-            font-size: 1rem;
-        }
-        
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(67, 97, 238, 0.4);
-        }
-        
-        @media (max-width: 768px) {
-            .scores-grid,
-            .charts-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .header h1 {
-                font-size: 1.75rem;
-            }
-            
-            .content {
-                padding: 1.5rem;
-            }
-            
-            .chart-container {
-                height: 300px;
-            }
-        }
+      .progress-container {
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        border-radius: 15px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        color: white;
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+      }
+
+      .metric-card {
+        background: white;
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+        border-left: 4px solid var(--primary);
+      }
+
+      .metric-card:hover {
+        transform: translateY(-5px);
+      }
+
+      .chart-container {
+        background: white;
+        border-radius: 16px;
+        padding: 2.5rem;
+        margin: 2rem 0;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+      }
+
+      .rec-card {
+        background: white;
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+      }
+
+      .rec-card::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 4px;
+        height: 100%;
+        background: currentColor;
+        opacity: 0.1;
+      }
+
+      .rec-title {
+        font-size: 1.25rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+      }
+
+      .explanation-item {
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 8px;
+        padding: 1rem;
+        margin: 0.5rem 0;
+      }
+
+      .chart-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: var(--dark);
+        padding-left: 0.5rem;
+        border-left: 3px solid var(--primary);
+      }
+
+      .chart-container canvas {
+        max-height: 70vh !important; /* Increased from 220px */
+        min-height: 40vh;
+        width: 100% !important;
+      }
     </style>
-</head>
-<body>
-    <div class="container">
-        <div class="card">
-            <div class="header">
-                <h1>Your Mental Health Assessment</h1>
-                <p>Here's a detailed analysis of your results</p>
-            </div>
-            
-            <div class="content">
-                <div class="scores">
-                    <h2 class="section-title">Your Scores</h2>
-                    <div class="scores-grid">
-                        <div class="score-card stress">
-                            <div class="score-label">Stress Level</div>
-                            <div class="score-value">{{ insights.stress.score|floatformat:2 }}</div>
-                            <div class="score-level">{{ insights.stress.level }}</div>
-                            <div class="score-scale">(0-5 scale)</div>
-                        </div>
-                        
-                        <div class="score-card depression">
-                            <div class="score-label">Depression Score</div>
-                            <div class="score-value">{{ insights.depression.score|floatformat:2 }}</div>
-                            <div class="score-level">{{ insights.depression.level }}</div>
-                            <div class="score-scale">(0-5 scale)</div>
-                        </div>
-                        
-                        <div class="score-card anxiety">
-                            <div class="score-label">Anxiety Score</div>
-                            <div class="score-value">{{ insights.anxiety.score|floatformat:2 }}</div>
-                            <div class="score-level">{{ insights.anxiety.level }}</div>
-                            <div class="score-scale">(0-5 scale)</div>
-                        </div>
-                    </div>
-                </div>
+  </head>
+  <body>
+    {% include 'navbar.html' %}
 
-                <div class="charts-grid">
-                    <div class="chart-card">
-                        <h2 class="section-title">Score Distribution</h2>
-                        <div class="chart-container">
-                            <canvas id="doughnutChart"></canvas>
-                        </div>
-                    </div>
-                    
-                    <div class="chart-card">
-                        <h2 class="section-title">Summary Overview</h2>
-                        <div class="chart-container">
-                            <canvas id="barChart"></canvas>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="recommendations">
-                    <h2 class="section-title">Personalized Recommendations</h2>
-                    
-                    <div class="rec-card">
-                        <h3 class="rec-title stress">
-                            <span>Stress Management</span>
-                        </h3>
-                        <ul class="rec-list">
-                            {% for recommendation in insights.stress.recommendations %}
-                                <li>{{ recommendation }}</li>
-                            {% endfor %}
-                        </ul>
-                    </div>
-                    
-                    <div class="rec-card">
-                        <h3 class="rec-title depression">
-                            <span>Depression Support</span>
-                        </h3>
-                        <ul class="rec-list">
-                            {% for recommendation in insights.depression.recommendations %}
-                                <li>{{ recommendation }}</li>
-                            {% endfor %}
-                        </ul>
-                    </div>
-                    
-                    <div class="rec-card">
-                        <h3 class="rec-title anxiety">
-                            <span>Anxiety Reduction</span>
-                        </h3>
-                        <ul class="rec-list">
-                            {% for recommendation in insights.anxiety.recommendations %}
-                                <li>{{ recommendation }}</li>
-                            {% endfor %}
-                        </ul>
-                    </div>
-                </div>
-                
-                <div class="explanations">
-                    <h2 class="section-title">Detailed Analysis</h2>
-                    <div class="explanation">
-                        {% for explanation in explanation.explanations %}
-                            <div class="explanation-item">{{ explanation }}</div>
-                        {% endfor %}
-                    </div>
-                </div>
-                
-                <div class="btn-container">
-                    <a href="{% url 'home' %}" class="btn">Take Another Assessment</a>
-                </div>
-            </div>
+    <div class="container">
+      <!-- Progress Section -->
+      <div class="progress-container">
+        <h2 class="text-center mb-4">
+          <i class="fas fa-chart-line"></i> Your Mental Health Overview 🧠
+        </h2>
+        <div
+          class="progress"
+          style="height: 30px; background: rgba(255, 255, 255, 0.2)"
+        >
+          <div
+            class="progress-bar bg-danger"
+            style="width: {{ insights.stress.score|floatformat:2|add:0 }}0%"
+          >
+            Stress: {{ insights.stress.score|floatformat:1 }}
+          </div>
+          <div
+            class="progress-bar bg-warning"
+            style="width: {{ insights.depression.score|floatformat:2|add:0 }}0%"
+          >
+            Depression: {{ insights.depression.score|floatformat:1 }}
+          </div>
+          <div
+            class="progress-bar bg-success"
+            style="width: {{ insights.anxiety.score|floatformat:2|add:0 }}0%"
+          >
+            Anxiety: {{ insights.anxiety.score|floatformat:1 }}
+          </div>
         </div>
+      </div>
+
+      <!-- Metric Cards -->
+      <div class="row g-4">
+        <div class="col-md-4">
+          <div class="metric-card">
+            <h5 class="text-danger">
+              <i class="fas fa-fire"></i> Stress Level
+            </h5>
+            <h1 class="display-2">{{ insights.stress.score|floatformat:1 }}</h1>
+            <span class="badge bg-danger">{{ insights.stress.level }}</span>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="metric-card">
+            <h5 class="text-warning">
+              <i class="fas fa-cloud"></i> Depression Score
+            </h5>
+            <h1 class="display-2">
+              {{ insights.depression.score|floatformat:1 }}
+            </h1>
+            <span class="badge bg-warning"
+              >{{ insights.depression.level }}</span
+            >
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="metric-card">
+            <h5 class="text-success">
+              <i class="fas fa-wind"></i> Anxiety Score
+            </h5>
+            <h1 class="display-2">
+              {{ insights.anxiety.score|floatformat:1 }}
+            </h1>
+            <span class="badge bg-success">{{ insights.anxiety.level }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Charts -->
+      <div class="row g-4">
+        <div class="col-md-6">
+          <div class="chart-container" style="height: 70vh">
+            <h5 class="chart-title mb-3">
+              <i class="fas fa-chart-radar"></i> Score Analysis
+            </h5>
+            <canvas id="radarChart"></canvas>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="chart-container" style="height: 70vh">
+            <h5 class="chart-title mb-3">
+              <i class="fas fa-chart-bar"></i> Peer Comparison
+            </h5>
+            <canvas id="comparisonChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recommendations -->
+      <div class="rec-card stress" style="color: var(--danger)">
+        <h3 class="rec-title">
+          <i class="fas fa-hands-helping"></i> Stress Management
+        </h3>
+        <ul class="list-unstyled">
+          {% for recommendation in insights.stress.recommendations %}
+          <li class="mb-2">
+            <i class="fas fa-circle-small text-danger"></i> {{ recommendation }}
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+
+      <div class="rec-card depression" style="color: var(--warning)">
+        <h3 class="rec-title">
+          <i class="fas fa-hand-holding-heart"></i> Depression Support
+        </h3>
+        <ul class="list-unstyled">
+          {% for recommendation in insights.depression.recommendations %}
+          <li class="mb-2">
+            <i class="fas fa-circle-small text-warning"></i> {{ recommendation
+            }}
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+
+      <div class="rec-card anxiety" style="color: var(--success)">
+        <h3 class="rec-title">
+          <i class="fas fa-brain"></i> Anxiety Reduction
+        </h3>
+        <ul class="list-unstyled">
+          {% for recommendation in insights.anxiety.recommendations %}
+          <li class="mb-2">
+            <i class="fas fa-circle-small text-success"></i> {{ recommendation
+            }}
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+
+      <!-- Detailed Analysis -->
+      <div class="chart-container">
+        <h3 class="mb-4">
+          <i class="fas fa-microscope"></i> Detailed Analysis
+        </h3>
+        {% for explanation in explanation.explanations %}
+        <div class="explanation-item">
+          <i class="fas fa-arrow-right text-primary me-2"></i>{{ explanation }}
+        </div>
+        {% endfor %}
+      </div>
+
+      <!-- Final CTA -->
+      <div class="text-center my-5">
+        <a href="{% url 'home' %}" class="btn btn-primary btn-lg px-5 py-3">
+          <i class="fas fa-redo me-2"></i>Retake Assessment
+        </a>
+      </div>
     </div>
 
+    <!-- Updated Script section -->
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Bar Chart Configuration
-            const barCtx = document.getElementById('barChart').getContext('2d');
-            new Chart(barCtx, {
-                type: 'bar',
-                data: {
-                    labels: ['Stress', 'Depression', 'Anxiety'],
-                    datasets: [{
-                        label: 'Score',
-                        data: [
-                            {{ insights.stress.score|floatformat:2 }},
-                            {{ insights.depression.score|floatformat:2 }},
-                            {{ insights.anxiety.score|floatformat:2 }}
-                        ],
-                        backgroundColor: [
-                            'rgba(247, 37, 133, 0.7)',
-                            'rgba(247, 127, 0, 0.7)',
-                            'rgba(76, 201, 240, 0.7)'
-                        ],
-                        borderColor: [
-                            'rgba(247, 37, 133, 1)',
-                            'rgba(247, 127, 0, 1)',
-                            'rgba(76, 201, 240, 1)'
-                        ],
-                        borderWidth: 2
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            max: 5,
-                            title: {
-                                display: true,
-                                text: 'Score (0-5 scale)'
-                            }
-                        }
-                    },
-                    plugins: {
-                        legend: {
-                            display: false
+      // Radar Chart
+      new Chart(document.getElementById('radarChart'), {
+          type: 'radar',
+          data: {
+              labels: ['Stress', 'Depression', 'Anxiety'],
+              datasets: [{
+                  label: 'Your Scores',
+                  data: [
+                      {{ insights.stress.score|floatformat:1 }},
+                      {{ insights.depression.score|floatformat:1 }},
+                      {{ insights.anxiety.score|floatformat:1 }}
+                  ],
+                  backgroundColor: 'rgba(67, 97, 238, 0.1)',
+                  borderColor: '#4361ee',
+                  pointRadius: 4
+              }]
+          },
+          options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              scales: {
+                  r: {
+                      beginAtZero: true,
+                      max: 5,
+                      pointLabels: {
+                          font: {
+                              size: 13
+                          }
+                      }
+                  }
+              }
+          }
+      });
+
+      // Comparison Chart
+      new Chart(document.getElementById('comparisonChart'), {
+          type: 'bar',
+          data: {
+              labels: ['Stress', 'Depression', 'Anxiety'],
+              datasets: [{
+                  label: 'Your Score',
+                  data: [
+                      {{ insights.stress.score|floatformat:1 }},
+                      {{ insights.depression.score|floatformat:1 }},
+                      {{ insights.anxiety.score|floatformat:1 }}
+                  ],
+                  backgroundColor: '#4361ee',
+                  barThickness: 25
+              },
+              {
+                  label: 'Average',
+                  data: [3.2, 2.8, 2.4],
+                  backgroundColor: '#7c3aed',
+                  barThickness: 25
+              }]
+          },
+          options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              scales: {
+                  y: {
+                      beginAtZero: true,
+                      max: 5,
+                      ticks: {
+                        font: {
+                            size: 12  // Larger axis labels
                         },
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    return `${context.dataset.label}: ${context.parsed.y.toFixed(2)}`;
-                                }
+                          stepSize: 1
+                      }
+                  },
+                    x: {
+                        ticks: {
+                            font: {
+                                size: 12  // Larger axis labels
                             }
                         }
                     }
-                }
-            });
-
-            // Doughnut Chart Configuration
-            const doughnutCtx = document.getElementById('doughnutChart').getContext('2d');
-            new Chart(doughnutCtx, {
-                type: 'doughnut',
-                data: {
-                    labels: ['Stress', 'Depression', 'Anxiety'],
-                    datasets: [{
-                        data: [
-                            {{ insights.stress.score|floatformat:2 }},
-                            {{ insights.depression.score|floatformat:2 }},
-                            {{ insights.anxiety.score|floatformat:2 }}
-                        ],
-                        backgroundColor: [
-                            'rgba(247, 37, 133, 0.7)',
-                            'rgba(247, 127, 0, 0.7)',
-                            'rgba(76, 201, 240, 0.7)'
-                        ],
-                        borderColor: [
-                            'rgba(247, 37, 133, 1)',
-                            'rgba(247, 127, 0, 1)',
-                            'rgba(76, 201, 240, 1)'
-                        ],
-                        borderWidth: 2,
-                        hoverOffset: 20
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            position: 'bottom',
-                            labels: {
-                                padding: 20,
-                                font: {
-                                    size: 14
-                                }
-                            }
-                        },
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    const total = 15; // Total possible score (3 categories * 5 max each)
-                                    const percentage = ((context.parsed / total) * 100).toFixed(1);
-                                    return `${context.label}: ${context.parsed} (${percentage}% of total)`;
-                                }
-                            }
-                        }
-                    },
-                    cutout: '60%'
-                }
-            });
-        });
+              }
+          }
+      });
     </script>
-</body>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
 </html>
-
-
-
-
-
