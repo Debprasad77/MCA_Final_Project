@@ -243,32 +243,6 @@ class UserUpdateForm(forms.ModelForm):
             }),
         }
 
-class CustomPasswordChangeForm(PasswordChangeForm):
-    old_password = forms.CharField(
-        label="Old Password",
-        strip=False,
-        widget=forms.PasswordInput(attrs={
-            'class': 'form-control',
-            'placeholder': 'Current Password'
-        })
-    )
-    new_password1 = forms.CharField(
-        label="New Password",
-        strip=False,
-        widget=forms.PasswordInput(attrs={
-            'class': 'form-control',
-            'placeholder': 'New Password'
-        })
-    )
-    new_password2 = forms.CharField(
-        label="Confirm New Password",
-        strip=False,
-        widget=forms.PasswordInput(attrs={
-            'class': 'form-control',
-            'placeholder': 'Confirm New Password'
-        })
-    )
-
 class UserRegistrationForm(UserCreationForm):
     email = forms.EmailField()
     first_name = forms.CharField(max_length=30, required=True)

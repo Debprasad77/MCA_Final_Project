@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 {% load static %}
+{% include 'navbar.html' %}
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -98,7 +100,6 @@
     </style>
 </head>
 <body>
-    {% include 'navbar.html' %}
 
     <!-- Hero Section -->
     <section class="gradient-bg">
@@ -111,10 +112,11 @@
                         Discover in <span class="highlight-text">3 Minutes</span>
                     </h1>
                     <button class="btn assessment-btn text-white rounded-pill" 
-                            data-bs-toggle="modal" 
-                            data-bs-target="#assessmentModal">
-                        Start Free Assessment
-                    </button>
+                    {% if not user.is_authenticated %}data-bs-toggle="modal" data-bs-target="#loginModal"
+                    {% else %}data-bs-toggle="modal" data-bs-target="#assessmentModal"{% endif %}>
+                Start Free Assessment
+            </button>
+
                 </div>
                 <div class="col-lg-6 mt-5 mt-lg-0">
                     <img src="{% static 'images/hero.png' %}" 

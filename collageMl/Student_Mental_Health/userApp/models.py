@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.utils import timezone
 
 class UserResponse(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
@@ -30,6 +31,7 @@ class Prediction(models.Model):
     stress_level = models.DecimalField(max_digits=3, decimal_places=2)
     depression_score = models.DecimalField(max_digits=3, decimal_places=2)
     anxiety_score = models.DecimalField(max_digits=3, decimal_places=2)
+    predict_date = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return f"Prediction for {self.user_response}"
