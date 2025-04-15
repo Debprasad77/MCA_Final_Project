@@ -454,7 +454,7 @@
                 </a>
               </li>
               <li><hr class="dropdown-divider mx-3 my-2" /></li>
-              <li>
+              {% comment %} <li>
                 <a
                   class="dropdown-item text-danger d-flex align-items-center gap-2"
                   href="{% url 'logout' %}"
@@ -462,7 +462,14 @@
                   <i class="bi bi-box-arrow-right fs-5"></i>
                   <span>Logout</span>
                 </a>
-              </li>
+              </li> {% endcomment %}
+              <form method="post" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button type="submit" class="dropdown-item text-danger d-flex align-items-center gap-2">
+                  <i class="bi bi-box-arrow-right fs-5"></i>
+                  <span>Logout</span>
+                </button>
+              </form>
             </ul>
           </div>
           {% else %}
