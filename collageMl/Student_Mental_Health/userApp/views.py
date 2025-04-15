@@ -8,6 +8,7 @@ from django.http import JsonResponse, HttpResponse
 from .forms import MentalHealthForm,UserRegistrationForm
 from django.conf import settings
 
+from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate
@@ -332,40 +333,64 @@ def profile_view(request):
 
     return render(request, 'profile.html', {'form': form})
 
+# @login_required
+# def settings_view(request):
+#     user_form = UserUpdateForm(instance=request.user)
+#     password_form = PasswordChangeForm(request.user)
+#     profile_form = ProfileForm(instance=request.user.profile)
+
+#     if request.method == 'POST':
+#         if 'update_account' in request.POST:
+#             user_form = UserUpdateForm(request.POST, instance=request.user)
+#             if user_form.is_valid():
+#                 user_form.save()
+#                 messages.success(request, 'Your account details have been updated!')
+#                 return redirect('settings')
+        
+#         elif 'change_password' in request.POST:
+#             password_form = PasswordChangeForm(request.user, request.POST)
+#             if password_form.is_valid():
+#                 password_form.save()
+#                 messages.success(request, 'Your password has been changed!')
+#                 return redirect('settings')
+
+#         elif 'update_profile' in request.POST:
+#             profile_form = ProfileForm(request.POST, request.FILES, instance=request.user.profile)
+#             if profile_form.is_valid():
+#                 profile_form.save()
+#                 messages.success(request, 'Your profile has been updated!')
+#                 return redirect('settings')
+
+#     context = {
+#         'user_form': user_form,
+#         'password_form': password_form,
+#         'profile_form': profile_form
+#     }
+#     return render(request, 'settings.html', context)
+
 @login_required
 def settings_view(request):
     user_form = UserUpdateForm(instance=request.user)
     password_form = PasswordChangeForm(request.user)
-    profile_form = ProfileForm(instance=request.user.profile)
+    profile_form = ProfileForm(instance=request.user.profile)  # This is crucial
 
     if request.method == 'POST':
-        if 'update_account' in request.POST:
-            user_form = UserUpdateForm(request.POST, instance=request.user)
-            if user_form.is_valid():
-                user_form.save()
-                messages.success(request, 'Your account details have been updated!')
-                return redirect('settings')
-        
-        elif 'change_password' in request.POST:
-            password_form = PasswordChangeForm(request.user, request.POST)
-            if password_form.is_valid():
-                password_form.save()
-                messages.success(request, 'Your password has been changed!')
-                return redirect('settings')
-
-        elif 'update_profile' in request.POST:
+        if 'update_profile' in request.POST:
             profile_form = ProfileForm(request.POST, request.FILES, instance=request.user.profile)
             if profile_form.is_valid():
                 profile_form.save()
-                messages.success(request, 'Your profile has been updated!')
-                return redirect('settings')
+                messages.success(request, 'Profile updated successfully!')
+                return redirect('profile')
+
+        # Keep other form handling logic for user_form and password_form
 
     context = {
         'user_form': user_form,
         'password_form': password_form,
-        'profile_form': profile_form
+        'profile_form': profile_form  # Make sure this is passed as 'profile_form'
     }
     return render(request, 'settings.html', context)
+
 
 
 
