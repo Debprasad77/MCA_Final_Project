@@ -2,8 +2,8 @@
 <div class="auth-container">
   <div class="auth-card">
     <div class="auth-header">
-      <h2 class="auth-title gradient-text">Welcome Back</h2>
-      <p class="auth-subtitle">Sign in to your MindMetrics account</p>
+      <h2 class="auth-title gradient-text">Create Your Account</h2>
+      <p class="auth-subtitle">Join MindMetrics to unlock all features</p>
     </div>
     
     <form method="post" class="auth-form">
@@ -25,20 +25,12 @@
       </div>
       {% endfor %}
       
-      <div class="form-options">
-        <div class="form-check">
-          <input type="checkbox" class="form-check-input" id="rememberMe">
-          <label class="form-check-label" for="rememberMe">Remember me</label>
-        </div>
-        <a href="{% url 'password_reset' %}" class="forgot-password">Forgot password?</a>
-      </div>
-      
       <button type="submit" class="auth-submit-btn">
-        <i class="bi bi-box-arrow-in-right me-2"></i>Login
+        <i class="bi bi-person-plus me-2"></i>Register
       </button>
       
       <div class="auth-footer">
-        <p>Don't have an account? <a href="{% url 'register' %}" class="auth-link">Create one</a></p>
+        <p>Already have an account? <a href="{% url 'login' %}" class="auth-link">Sign in</a></p>
       </div>
     </form>
   </div>
@@ -115,36 +107,15 @@
     box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
   }
   
-  .form-options {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 0.5rem 0;
-  }
-  
-  .form-check {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-  
-  .form-check-input {
-    width: 1.1em;
-    height: 1.1em;
-    margin-top: 0;
-    accent-color: #2563eb;
-  }
-  
-  .forgot-password {
+  .form-help {
     color: #64748b;
-    font-size: 0.85rem;
-    text-decoration: none;
-    transition: color 0.2s ease;
+    font-size: 0.8rem;
   }
   
-  .forgot-password:hover {
-    color: #2563eb;
-    text-decoration: underline;
+  .form-error {
+    color: #ef4444;
+    font-size: 0.8rem;
+    margin-top: 0.25rem;
   }
   
   /* Button styles */
@@ -161,7 +132,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: 1rem;
+    margin-top: 0.5rem;
   }
   
   .auth-submit-btn:hover {
@@ -202,12 +173,6 @@
     
     .auth-title {
       font-size: 1.5rem;
-    }
-    
-    .form-options {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 0.75rem;
     }
   }
 </style>

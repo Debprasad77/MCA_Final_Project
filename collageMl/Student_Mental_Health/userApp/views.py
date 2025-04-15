@@ -5,9 +5,19 @@ import numpy as np
 import pandas as pd
 from django.shortcuts import render, redirect
 from django.http import JsonResponse, HttpResponse
-from .forms import MentalHealthForm
+from .forms import MentalHealthForm,UserRegistrationForm,CustomPasswordChangeForm
 from .models import UserResponse, Prediction
 from django.conf import settings
+
+from django.contrib.auth import login, logout
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib import messages
+from .models import Profile 
+from django.contrib.auth.forms import PasswordChangeForm
+from .forms import ProfileForm, UserUpdateForm
+
 
 
 model_path = os.path.join(settings.BASE_DIR, 'userApp', 'Ml_models', 'multi_model.joblib')
@@ -181,7 +191,6 @@ def generate_explanation(prediction):
             "error": str(e)
         }
 
-
 def home(request):
     if request.method == 'POST':
         form = MentalHealthForm(request.POST)
@@ -294,14 +303,7 @@ def predict_api(request):
     return JsonResponse({'error': 'Invalid request method'}, status=400)
 
 
-from django.contrib.auth import login, logout
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth import authenticate
-from django.contrib.auth.forms import AuthenticationForm
-from django.contrib import messages
-from .models import Profile 
-from django.contrib.auth.forms import PasswordChangeForm
-from .forms import ProfileForm, UserUpdateForm
+
 
 def login_view(request):
     if request.method == 'POST':
@@ -382,6 +384,30 @@ def settings_view(request):
 
 
 
+def register(request):
+    if request.method == 'POST':
+        form = UserRegistrationForm(request.POST)
+        if form.is_valid():
+            form.save()  # Saves user including first/last name and email
+            username = form.cleaned_data.get('username')
+            messages.success(request, f'Account created for {username}. You can now log in.')
+            return redirect('login')
+    else:
+        form = UserRegistrationForm()
+    return render(request, 'register.html', {'form': form})
 
 
 
+def change_password(request):
+    if request.method == 'POST':
+        form = CustomPasswordChangeForm(user=request.user, data=request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)  # Keeps the user logged in
+            messages.success(request, 'Your password was successfully updated!')
+            return redirect('profile')  # or wherever you want to redirect
+        else:
+            messages.error(request, 'Please correct the error below.')
+    else:
+        form = CustomPasswordChangeForm(user=request.user)
+    return render(request, 'change_password.html', {'form': form})

@@ -1,4 +1,4 @@
-{% load static %}
+{% comment %} {% load static %}
 
 <nav class="navbar navbar-expand-lg py-2 fixed-top bg-white border-bottom">
   <div class="container">
@@ -17,7 +17,7 @@
       <div class="navbar-nav w-100 align-items-center gap-3">
         <div
           class="d-flex justify-content-center flex-grow-1 gap-4"
-          style="margin-left: 45rem"
+          style="margin-left: 35rem"
         >
           <a
             class="nav-link text-dark fw-bold position-relative hover-underline d-flex align-items-center gap-2"
@@ -155,4 +155,476 @@
     background-color: #1d4ed8 !important;
     transform: translateY(-1px);
   }
+</style> {% endcomment %}
+
+
+
+
+
+
+{% comment %} {% load static %}
+
+<nav class="navbar navbar-expand-lg py-2 fixed-top bg-white border-bottom">
+  <div class="container">
+    <a class="navbar-brand fw-bold fs-3 gradient-text hover-scale" href="/">
+      <i class="bi bi-journal-text me-2"></i>MindMetrics
+    </a>
+    <button
+      class="navbar-toggler shadow-none border-0"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarNav"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <div class="navbar-nav w-100 align-items-center">
+        <!-- Navigation Links - now properly responsive -->
+        <div class="d-flex flex-column flex-lg-row justify-content-center align-items-center flex-grow-1 gap-3 gap-lg-4">
+          <a
+            class="nav-link text-dark fw-bold position-relative hover-underline d-flex align-items-center gap-2"
+            href="#"
+          >
+            <i class="bi bi-pencil-square"></i><span class="d-none d-sm-inline">Blog</span>
+          </a>
+          <a
+            class="nav-link text-dark fw-bold position-relative hover-underline d-flex align-items-center gap-2"
+            href="#"
+          >
+            <i class="bi bi-info-circle"></i><span class="d-none d-sm-inline">About</span>
+          </a>
+          <a
+            class="nav-link text-dark fw-bold position-relative hover-underline d-flex align-items-center gap-2"
+            href="#"
+          >
+            <i class="bi bi-envelope"></i><span class="d-none d-sm-inline">Contact</span>
+          </a>
+        </div>
+
+        <!-- Profile Section -->
+        <div class="ms-lg-auto mt-3 mt-lg-0">
+          {% if user.is_authenticated %}
+          <div class="dropdown">
+            <div
+              class="d-flex align-items-center gap-3"
+              data-bs-toggle="dropdown"
+            >
+              <img
+                src="{% if user.profile.image %}{{ user.profile.image.url }}{% else %}{% static 'images/default-avatar.png' %}{% endif %}"
+                class="profile-picture rounded-circle shadow-sm"
+                alt="Profile"
+                style="width: 42px; height: 42px; object-fit: cover"
+              />
+              <span class="d-none d-lg-inline">{{ user.username }}</span>
+            </div>
+            <ul class="dropdown-menu dropdown-menu-end border-0 mt-2 shadow-lg">
+              <li>
+                <a
+                  class="dropdown-item d-flex align-items-center gap-2"
+                  href="{% url 'profile' %}"
+                >
+                  <i class="bi bi-person fs-5"></i>
+                  <span>Profile</span>
+                </a>
+              </li>
+              <li>
+                <a
+                  class="dropdown-item d-flex align-items-center gap-2"
+                  href="{% url 'settings' %}"
+                >
+                  <i class="bi bi-gear fs-5"></i>
+                  <span>Settings</span>
+                </a>
+              </li>
+              <li><hr class="dropdown-divider mx-3 my-2" /></li>
+              <li>
+                <a
+                  class="dropdown-item text-danger d-flex align-items-center gap-2"
+                  href="{% url 'logout' %}"
+                >
+                  <i class="bi bi-box-arrow-right fs-5"></i>
+                  <span>Logout</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+          {% else %}
+          <a
+            class="btn btn-primary text-white px-3 px-lg-4 rounded-pill d-flex align-items-center gap-2"
+            href="{% url 'login' %}"
+          >
+            <i class="bi bi-box-arrow-in-right"></i><span class="d-none d-sm-inline">Login</span>
+          </a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+/>
+
+<style>
+  .gradient-text {
+    background: linear-gradient(45deg, #2563eb, #7c3aed);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .profile-picture {
+    transition: all 0.3s ease;
+    border: 2px solid #e2e8f0;
+    cursor: pointer;
+  }
+
+  .profile-picture:hover {
+    transform: scale(1.08);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  }
+
+  .dropdown-menu {
+    border-radius: 12px;
+    padding: 0.5rem;
+    border: 1px solid #e2e8f0 !important;
+    min-width: 200px;
+  }
+
+  .dropdown-item {
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    transition: all 0.2s ease;
+    font-weight: 500;
+  }
+
+  .dropdown-item:hover {
+    background: #f8fafc;
+    transform: translateX(5px);
+  }
+
+  .dropdown-item:active {
+    background: #f1f5f9;
+  }
+
+  .btn-primary {
+    background-color: #2563eb !important;
+    transition: all 0.3s ease !important;
+  }
+
+  .btn-primary:hover {
+    background-color: #1d4ed8 !important;
+    transform: translateY(-1px);
+  }
+
+  /* Mobile-specific styles */
+  @media (max-width: 991.98px) {
+    .navbar-nav {
+      gap: 1rem;
+      padding: 1rem 0;
+    }
+    
+    .nav-link {
+      padding: 0.5rem 1rem;
+      width: 100%;
+      justify-content: flex-start;
+    }
+    
+    .dropdown-menu {
+      width: 100%;
+    }
+    
+    .profile-section {
+      margin-top: 1rem;
+      border-top: 1px solid #e2e8f0;
+      padding-top: 1rem;
+    }
+  }
+
+  /* Hover underline animation */
+  .hover-underline::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    transform: scaleX(0);
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    background-color: #2563eb;
+    transform-origin: bottom right;
+    transition: transform 0.25s ease-out;
+  }
+
+  .hover-underline:hover::after {
+    transform: scaleX(1);
+    transform-origin: bottom left;
+  }
+
+  /* Scale effect for brand */
+  .hover-scale {
+    transition: transform 0.3s ease;
+  }
+
+  .hover-scale:hover {
+    transform: scale(1.05);
+  }
+</style> {% endcomment %}
+
+
+
+
+
+
+
+
+{% load static %}
+
+<nav class="navbar navbar-expand-lg py-2 fixed-top bg-white border-bottom">
+  <div class="container">
+    <a class="navbar-brand fw-bold fs-3 gradient-text hover-scale" href="/">
+      <i class="bi bi-journal-text me-2"></i>MindMetrics
+    </a>
+    <button
+      class="navbar-toggler shadow-none border-0"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarNav"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <div class="navbar-nav w-100 align-items-center">
+        <!-- Navigation Links -->
+        <div class="d-flex flex-column flex-lg-row justify-content-center align-items-center flex-grow-1 gap-3 gap-lg-4">
+          <a
+            class="nav-link text-dark fw-bold position-relative hover-underline d-flex align-items-center gap-2"
+            href="#"
+          >
+            <i class="bi bi-pencil-square"></i><span class="d-none d-sm-inline">Blog</span>
+          </a>
+          <a
+            class="nav-link text-dark fw-bold position-relative hover-underline d-flex align-items-center gap-2"
+            href="#"
+          >
+            <i class="bi bi-info-circle"></i><span class="d-none d-sm-inline">About</span>
+          </a>
+          <a
+            class="nav-link text-dark fw-bold position-relative hover-underline d-flex align-items-center gap-2"
+            href="#"
+          >
+            <i class="bi bi-envelope"></i><span class="d-none d-sm-inline">Contact</span>
+          </a>
+        </div>
+
+        <!-- Profile Section -->
+        <div class="ms-lg-auto mt-3 mt-lg-0">
+          {% if user.is_authenticated %}
+          <div class="dropdown">
+            <div
+              class="d-flex align-items-center gap-3"
+              data-bs-toggle="dropdown"
+            >
+              <img
+                src="{% if user.profile.image %}{{ user.profile.image.url }}{% else %}{% static 'images/default-avatar.png' %}{% endif %}"
+                class="profile-picture rounded-circle shadow-sm"
+                alt="Profile"
+                style="width: 42px; height: 42px; object-fit: cover"
+              />
+              <span class="d-none d-lg-inline">{{ user.username }}</span>
+            </div>
+            <ul class="dropdown-menu dropdown-menu-end border-0 mt-2 shadow-lg">
+              <li>
+                <a
+                  class="dropdown-item d-flex align-items-center gap-2"
+                  href="{% url 'profile' %}"
+                >
+                  <i class="bi bi-person fs-5"></i>
+                  <span>Profile</span>
+                </a>
+              </li>
+              <li>
+                <a
+                  class="dropdown-item d-flex align-items-center gap-2"
+                  href="{% url 'settings' %}"
+                >
+                  <i class="bi bi-gear fs-5"></i>
+                  <span>Settings</span>
+                </a>
+              </li>
+              <li><hr class="dropdown-divider mx-3 my-2" /></li>
+              <li>
+                <a
+                  class="dropdown-item text-danger d-flex align-items-center gap-2"
+                  href="{% url 'logout' %}"
+                >
+                  <i class="bi bi-box-arrow-right fs-5"></i>
+                  <span>Logout</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+          {% else %}
+          <div class="d-flex align-items-center gap-2">
+            <a
+              class="btn btn-soft-primary px-3 px-lg-4 rounded-pill d-flex align-items-center gap-2 hover-scale"
+              href="{% url 'register' %}"
+            >
+              <i class="bi bi-person-plus"></i><span class="d-none d-sm-inline">Register</span>
+            </a>
+            <a
+              class="btn btn-primary text-white px-3 px-lg-4 rounded-pill d-flex align-items-center gap-2 hover-scale"
+              href="{% url 'login' %}"
+            >
+              <i class="bi bi-box-arrow-in-right"></i><span class="d-none d-sm-inline">Login</span>
+            </a>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+/>
+
+<style>
+  .gradient-text {
+    background: linear-gradient(45deg, #2563eb, #7c3aed);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .profile-picture {
+    transition: all 0.3s ease;
+    border: 2px solid #e2e8f0;
+    cursor: pointer;
+  }
+
+  .profile-picture:hover {
+    transform: scale(1.08);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  }
+
+  .dropdown-menu {
+    border-radius: 12px;
+    padding: 0.5rem;
+    border: 1px solid #e2e8f0 !important;
+    min-width: 200px;
+  }
+
+  .dropdown-item {
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    transition: all 0.2s ease;
+    font-weight: 500;
+  }
+
+  .dropdown-item:hover {
+    background: #f8fafc;
+    transform: translateX(5px);
+  }
+
+  .dropdown-item:active {
+    background: #f1f5f9;
+  }
+
+  /* Button Styles */
+  .btn-soft-primary {
+    background-color: rgba(37, 99, 235, 0.1) !important;
+    color: #2563eb !important;
+    border: 1px solid rgba(37, 99, 235, 0.2) !important;
+    transition: all 0.3s ease !important;
+  }
+
+  .btn-soft-primary:hover {
+    background-color: rgba(37, 99, 235, 0.15) !important;
+    color: #1d4ed8 !important;
+    border-color: rgba(37, 99, 235, 0.3) !important;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.1);
+  }
+
+  .btn-primary {
+    background-color: #2563eb !important;
+    transition: all 0.3s ease !important;
+  }
+
+  .btn-primary:hover {
+    background-color: #1d4ed8 !important;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.2);
+  }
+
+  /* Mobile-specific styles */
+  @media (max-width: 991.98px) {
+    .navbar-nav {
+      gap: 1rem;
+      padding: 1rem 0;
+    }
+    
+    .nav-link {
+      padding: 0.5rem 1rem;
+      width: 100%;
+      justify-content: flex-start;
+    }
+    
+    .dropdown-menu {
+      width: 100%;
+    }
+    
+    .profile-section {
+      margin-top: 1rem;
+      border-top: 1px solid #e2e8f0;
+      padding-top: 1rem;
+    }
+  }
+
+  @media (max-width: 575.98px) {
+    .ms-lg-auto .d-flex {
+      flex-direction: column;
+      width: 100%;
+      gap: 0.75rem !important;
+    }
+    
+    .ms-lg-auto .btn {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+
+  /* Hover underline animation */
+  .hover-underline::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    transform: scaleX(0);
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    background-color: #2563eb;
+    transform-origin: bottom right;
+    transition: transform 0.25s ease-out;
+  }
+
+  .hover-underline:hover::after {
+    transform: scaleX(1);
+    transform-origin: bottom left;
+  }
+
+  /* Scale effect */
+  .hover-scale {
+    transition: transform 0.3s ease;
+  }
+
+  .hover-scale:hover {
+    transform: scale(1.02) translateY(-1px);
+  }
 </style>
+
+
