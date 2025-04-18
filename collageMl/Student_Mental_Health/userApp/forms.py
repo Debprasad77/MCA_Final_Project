@@ -195,6 +195,32 @@ class MentalHealthForm(forms.Form):
 
 
 
+# class ProfileForm(forms.ModelForm):
+#     class Meta:
+#         model = Profile
+#         fields = ['image', 'bio', 'location']
+#         widgets = {
+#             'image': forms.FileInput(attrs={
+#                 'class': 'form-control',
+#                 'accept': 'image/*'
+#             }),
+#             'bio': forms.Textarea(attrs={
+#                 'rows': 4,
+#                 'class': 'form-control',
+#                 'placeholder': 'Tell us about yourself...'
+#             }),
+#             'location': forms.TextInput(attrs={
+#                 'class': 'form-control',
+#                 'placeholder': 'Enter your location'
+#             }),
+#         }
+#         labels = {
+#             'image': 'Profile Picture',
+#             'bio': 'Biography',
+#             'location': 'Location'
+#         }
+
+
 
 class ProfileForm(forms.ModelForm):
     class Meta:
@@ -203,7 +229,8 @@ class ProfileForm(forms.ModelForm):
         widgets = {
             'image': forms.FileInput(attrs={
                 'class': 'form-control',
-                'accept': 'image/*'
+                'accept': 'image/*',
+                'id': 'id_image'
             }),
             'bio': forms.Textarea(attrs={
                 'rows': 4,
@@ -220,6 +247,10 @@ class ProfileForm(forms.ModelForm):
             'bio': 'Biography',
             'location': 'Location'
         }
+
+
+
+        
 
 class UserUpdateForm(forms.ModelForm):
     email = forms.EmailField(
