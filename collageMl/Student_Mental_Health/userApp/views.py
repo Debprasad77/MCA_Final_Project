@@ -17,6 +17,7 @@ from django.contrib import messages
 from .models import Profile 
 from django.contrib.auth.forms import PasswordChangeForm
 from .forms import ProfileForm, UserUpdateForm
+from .models import UserResponse, Prediction # If you have a UserResponse model
 
 
 
@@ -198,6 +199,7 @@ def home(request):
         form = MentalHealthForm(request.POST)
         if form.is_valid():
             try:
+                # In your home view, before rendering the template:
                 user_data = form.cleaned_data
                 model_path = os.path.join(settings.BASE_DIR, 'userApp', 'Ml_models', 'multi_model.joblib')
                 multi_model = joblib.load(model_path)
@@ -229,6 +231,7 @@ def home(request):
                 user_response.save()
                 print("UserResponse saved with ID:", user_response.id)
 
+
                 prediction_obj = Prediction(
                     user_response=user_response,
                     stress_level=prediction[0][0],
@@ -242,7 +245,8 @@ def home(request):
                 return render(request, 'result.html', {
                     'prediction': prediction.tolist(),
                     'insights': insights,
-                    'explanation': explanation
+                    'explanation': explanation,
+                    'user_data': user_data
                 })
 
             except Exception as e:
@@ -407,20 +411,6 @@ def register(request):
     return render(request, 'registration/register.html', {'form': form})
 
 
-
-# def change_password(request):
-#     if request.method == 'POST':
-#         form = CustomPasswordChangeForm(user=request.user, data=request.POST)
-#         if form.is_valid():
-#             user = form.save()
-#             update_session_auth_hash(request, user)  # Keeps the user logged in
-#             messages.success(request, 'Your password was successfully updated!')
-#             return redirect('profile')  # or wherever you want to redirect
-#         else:
-#             messages.error(request, 'Please correct the error below.')
-#     else:
-#         form = CustomPasswordChangeForm(user=request.user)
-#     return render(request, 'change_password.html', {'form': form})
 
 
 
