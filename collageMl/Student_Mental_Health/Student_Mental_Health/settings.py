@@ -22,12 +22,18 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-ar-hbuc5x)7yqd5fou09a1n6768+40qkt&qsgxpo$_pb*&r_t6"
+# SECRET_KEY = "django-insecure-ar-hbuc5x)7yqd5fou09a1n6768+40qkt&qsgxpo$_pb*&r_t6"
+
+SECRET_KEY = os.environ.get('SECRET_KEY')  # Use environment variable for security
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# DEBUG = True
 
-ALLOWED_HOSTS = [] # Allow all hosts for development; change in production
+DEBUG =os.environ.get('DEBUG', 'False').lower() == 'True'  # Set to True for development, False for production
+
+# ALLOWED_HOSTS = [] # Allow all hosts for development; change in production
+
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS').split(" ")  # Allow localhost and any other hosts specified in the environment variable
 
 
 # Application definition
@@ -83,7 +89,9 @@ DATABASES = {
     }
 }
 
-DATABASES["default"]= dj_database_url.parse("postgresql://mindmetrics_django_user:aU2Z3ws1pYJUpuGaFzqRyJRFXumK5iY6@dpg-d07j8d9r0fns738kbmt0-a.oregon-postgres.render.com/mindmetrics_django")
+database_url=os.environ.get('DATABASE_URL')
+
+DATABASES["default"]= dj_database_url.parse(database_url)
 
 # postgresql://mindmetrics_django_user:aU2Z3ws1pYJUpuGaFzqRyJRFXumK5iY6@dpg-d07j8d9r0fns738kbmt0-a.oregon-postgres.render.com/mindmetrics_django
 
