@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 import os
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -26,7 +27,7 @@ SECRET_KEY = "django-insecure-ar-hbuc5x)7yqd5fou09a1n6768+40qkt&qsgxpo$_pb*&r_t6
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [] # Allow all hosts for development; change in production
 
 
 # Application definition
@@ -81,6 +82,11 @@ DATABASES = {
         "NAME": BASE_DIR / "db.sqlite3",
     }
 }
+
+DATABASES["default"]= dj_database_url.parse("postgresql://mindmetrics_django_user:aU2Z3ws1pYJUpuGaFzqRyJRFXumK5iY6@dpg-d07j8d9r0fns738kbmt0-a.oregon-postgres.render.com/mindmetrics_django")
+
+# postgresql://mindmetrics_django_user:aU2Z3ws1pYJUpuGaFzqRyJRFXumK5iY6@dpg-d07j8d9r0fns738kbmt0-a.oregon-postgres.render.com/mindmetrics_django
+
 
 
 # Password validation
@@ -151,4 +157,9 @@ EMAIL_HOST_USER = 'kumar.sudip.patra679@gmail.com'
 EMAIL_HOST_PASSWORD = 'zqbtcvegziwfpiwg'
 DEFAULT_FROM_EMAIL = 'kumar.sudip.patra679@gmail.com'  # Sender email
 CONTACT_RECEIVING_EMAIL = 'debprasad7047@gmail.com' # Where to receive messages
+
+
+
+
+
 
