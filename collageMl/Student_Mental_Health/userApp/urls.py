@@ -4,9 +4,16 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
 
+
+
 urlpatterns = [
     path('', views.home, name='home'),
     path('predict/', views.predict_api, name='predict_api'),
+    path('blog/', views.blog.as_view(), name='blog'),
+    path('contact/', views.contact, name='contact'),
+    path('about/', views.about.as_view(), name='about'),
+
+    
     path('logout/', views.logout_view, name='logout'),
     path('profile/', views.profile_view, name='profile'),
     path('settings/', views.settings_view, name='settings'),
