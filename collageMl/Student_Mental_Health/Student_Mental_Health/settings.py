@@ -139,3 +139,16 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'kumar.sudip.patra679@gmail.com'
 EMAIL_HOST_PASSWORD = 'zqbtcvegziwfpiwg' 
+
+
+
+# Email Configuration
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'  # or your SMTP server
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'kumar.sudip.patra679@gmail.com'
+EMAIL_HOST_PASSWORD = 'zqbtcvegziwfpiwg'
+DEFAULT_FROM_EMAIL = 'kumar.sudip.patra679@gmail.com'  # Sender email
+CONTACT_RECEIVING_EMAIL = 'debprasad7047@gmail.com' # Where to receive messages
+

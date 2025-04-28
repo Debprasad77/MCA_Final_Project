@@ -12,15 +12,16 @@
     <style>
         /* Original Styles */
         .gradient-bg {
-            background: linear-gradient(135deg, #2e84db 0%, #1a4b8c 100%);
+            /* background: linear-gradient(135deg, #2e84db 0%, #1a4b8c 100%); */ 
+            background: linear-gradient(135deg,rgb(83, 223, 78) 0%, #224abe 100%)
         }
         
         body {
-            background: #f8fafc;
+            background: #f5f9ff;
         }
 
         .feature-card {
-            background: #ffffff;
+            background: #f3f0ff;
             border-radius: 20px;
             box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
             transition: transform 0.3s ease;
@@ -38,6 +39,13 @@
             padding: 1rem 2.5rem;
             font-size: 1.2rem;
             letter-spacing: 0.5px;
+            box-shadow: 0 4px 12px rgba(233, 82, 82, 0.1); /* soft shadow */
+            transition: all 0.3s ease;
+        }
+        .assessment-btn:hover {
+            background: linear-gradient(135deg, #ff6b81, #ff4757); /* slight gradient effect */
+            transform: translateY(-5px) scale(1.03); /* lift + zoom slightly */
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); /* deeper shadow on hover */
         }
 
         .highlight-text {
@@ -170,24 +178,24 @@
                 <p class="text-muted">Three simple steps to understanding your mental health better</p>
             </div>
         </div>
-        <div class="row g-4">
+        <div class="row g-4" >
             <!-- Step Cards -->
-            <div class="col-md-4">
-                <div class="feature-card p-4 text-center">
+            <div class="col-md-4" >
+                <div class="feature-card p-4 text-center" style="background: #f3f0ff;">
                     <div class="step-number bg-highlight">1</div>
                     <h3 class="mb-3">Answer Questions</h3>
-                    <p class="text-secondary">Complete our brief 12-question assessment developed by mental health professionals</p>
+                    <p class="text-secondary">Complete our brief 17-question assessment developed by mental health professionals</p>
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="feature-card p-4 text-center">
+                <div class="feature-card p-4 text-center" style="background: #f3f0ff;">
                     <div class="step-number bg-highlight">2</div>
                     <h3 class="mb-3">Instant Analysis</h3>
                     <p class="text-secondary">Our system immediately evaluates your responses using clinical guidelines</p>
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="feature-card p-4 text-center">
+                <div class="feature-card p-4 text-center" style="background: #f3f0ff;">
                     <div class="step-number bg-highlight">3</div>
                     <h3 class="mb-3">Get Insights</h3>
                     <p class="text-secondary">Receive personalized recommendations and actionable next steps</p>
@@ -243,7 +251,7 @@
     </section>
 
     <!-- Mindfulness Banner -->
-    <section class="gradient-bg py-5" style="background: linear-gradient(135deg,rgb(117, 71, 255) 0%, #ff6b81 100%);">
+    <section class="gradient-bg py-5" style="background: linear-gradient(135deg, #2e84db 0%, #1a4b8c 100%);">
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-md-6">
